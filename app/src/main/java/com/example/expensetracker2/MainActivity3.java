@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 //this class will handle the modify/delete expense using a recycler view and card view
 public class MainActivity3 extends AppCompatActivity {
-    private ArrayList<Expense> ExpenseList;
+    public static ArrayList<Expense> ExpenseList;
     private RecyclerView mRecyclerView;
     private ExpenseAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManger;
@@ -66,8 +66,10 @@ public class MainActivity3 extends AppCompatActivity {
             @Override
             public void onItemClick(int position, View v) {
                 //handle clicks here
-                changeItem(position, "clicked");
+                //changeItem(position, "clicked");
+                //open activity2
                 Intent intent = new Intent(v.getContext(), MainActivity2.class);
+                intent.putExtra("position", position);
                 startActivityForResult(intent, 1);
             }
             @Override
