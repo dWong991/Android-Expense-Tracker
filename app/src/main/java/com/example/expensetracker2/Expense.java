@@ -5,13 +5,16 @@ public class Expense {
     private String date;
     private String name;
     private String category;
-    private double cost = 0;
+    private String cost;
+    private double costAmount = 0;
     private String reason;
     private String note;
 
-    public Expense(int imageResource, String newName, String newReason){
+    public Expense(int imageResource, String newName, String newCosts, String newReason){
         mImageResource = imageResource;
         name = newName;
+        cost = "$" + newCosts;
+        costAmount = Double.parseDouble(newCosts);
         reason = newReason;
     }
 
@@ -27,4 +30,5 @@ public class Expense {
     public String getReason(){
         return reason;
     }
+    public String getCost() { return cost; }
 }

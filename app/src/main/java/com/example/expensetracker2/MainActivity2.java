@@ -24,6 +24,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     public EditText mEditText1;
     public EditText mEditText2;
+    public EditText mEditText3;
 
 
     @Override
@@ -33,11 +34,12 @@ public class MainActivity2 extends AppCompatActivity {
         //populateFields();
         mEditText1 = findViewById(R.id.editName);
         mEditText2 = findViewById(R.id.editReason);
+        mEditText3 = findViewById(R.id.editCost);
         Button submitButton = findViewById(R.id.buttonSubmit);
         submitButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                MainActivity3.insertItem(mEditText1.getText().toString(), mEditText2.getText().toString());
+                MainActivity3.insertItem(mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString());
                 saveData();
                 finish();
             }

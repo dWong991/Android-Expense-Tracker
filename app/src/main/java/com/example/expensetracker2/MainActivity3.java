@@ -34,8 +34,8 @@ public class MainActivity3 extends AppCompatActivity {
 
     }
 
-    public static void insertItem(String name, String reason){
-        ExpenseList.add(new Expense(R.drawable.ic_android, name, reason));
+    public static void insertItem(String name, String costs, String reason){
+        ExpenseList.add(new Expense(R.drawable.ic_android, name, costs, reason));
         //mAdapter.notifyItemInserted(position);
     }
 
@@ -49,9 +49,9 @@ public class MainActivity3 extends AppCompatActivity {
     }
     public void createExpenseList(){
         ExpenseList = new ArrayList<>();
-        ExpenseList.add(new Expense(R.drawable.ic_android, "Dim Sum", "Lunch"));
-        ExpenseList.add(new Expense(R.drawable.ic_android, "Eggs and Bacon", "Breakfast"));
-        ExpenseList.add(new Expense(R.drawable.ic_android, "Steak", "Dinner"));
+//        ExpenseList.add(new Expense(R.drawable.ic_android, "Dim Sum", "Lunch"));
+//        ExpenseList.add(new Expense(R.drawable.ic_android, "Eggs and Bacon", "Breakfast"));
+//        ExpenseList.add(new Expense(R.drawable.ic_android, "Steak", "Dinner"));
     }
     public void buildRecyclerView(){
         mRecyclerView = findViewById(R.id.recyclerView);
