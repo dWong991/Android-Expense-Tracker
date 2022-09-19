@@ -82,7 +82,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         holder.mImageView.setImageResource(currentItem.getImageResource());
         holder.mTextView1.setText(currentItem.getName());
         holder.mTextView2.setText(currentItem.getReason());
-        holder.mTextView3.setText(currentItem.getCost());
+        holder.mTextView3.setText("$" + currentItem.getCost());
     }
 
     @Override

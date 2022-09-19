@@ -13,11 +13,15 @@ public class Expense {
     public Expense(int imageResource, String newName, String newCosts, String newReason){
         mImageResource = imageResource;
         name = newName;
-        cost = "$" + newCosts;
+        cost = newCosts;
         costAmount = Double.parseDouble(newCosts);
         reason = newReason;
     }
-
+    public void modifyExpense(String modName, String modCost, String modReason){
+        name = modName;
+        cost = modCost;
+        reason = modReason;
+    }
     public void changeText1(String text){
         name = text;
     }

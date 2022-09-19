@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class MainActivity3 extends AppCompatActivity {
     public static ArrayList<Expense> ExpenseList  = new ArrayList<>();
     private RecyclerView mRecyclerView;
-    private ExpenseAdapter mAdapter;
+    public static ExpenseAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManger;
     private Button buttonInsert;
     private Button buttonRemove;
@@ -43,8 +43,8 @@ public class MainActivity3 extends AppCompatActivity {
         ExpenseList.remove(position);
         mAdapter.notifyItemRemoved(position);
     }
-    public void changeItem(int position, String text){
-        ExpenseList.get(position).changeText1(text);
+    public static void changeItem(int position, String name, String costs, String reason){
+        ExpenseList.get(position).modifyExpense(name, costs, reason);
         mAdapter.notifyItemChanged(position);
     }
     public void createExpenseList(){
