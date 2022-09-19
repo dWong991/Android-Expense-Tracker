@@ -38,6 +38,7 @@ public class MainActivity2 extends AppCompatActivity {
             mEditText2 = findViewById(R.id.editReason);
             mEditText3 = findViewById(R.id.editCost);
             Button submitButton = findViewById(R.id.buttonSubmit);
+            submitButton.setText("Update");
             submitButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
