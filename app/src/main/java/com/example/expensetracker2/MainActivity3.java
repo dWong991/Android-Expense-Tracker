@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 //this class will handle the modify/delete expense using a recycler view and card view
 public class MainActivity3 extends AppCompatActivity {
-    public static ArrayList<Expense> ExpenseList;
+    public static ArrayList<Expense> ExpenseList  = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private ExpenseAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManger;
@@ -28,16 +28,15 @@ public class MainActivity3 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-
-        createExpenseList();
+        //createExpenseList();
         buildRecyclerView();
         //setButtons();
 
     }
 
-    public void insertItem(int position){
-        ExpenseList.add(new Expense(R.drawable.ic_android, "ice cream", "desert"));
-        mAdapter.notifyItemInserted(position);
+    public static void insertItem(String name, String reason){
+        ExpenseList.add(new Expense(R.drawable.ic_android, name, reason));
+        //mAdapter.notifyItemInserted(position);
     }
 
     public void removeItem(int position){
