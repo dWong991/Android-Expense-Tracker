@@ -48,10 +48,9 @@ public class MainActivity3 extends AppCompatActivity {
         mAdapter.notifyItemChanged(position);
     }
     public void createExpenseList(){
-        ExpenseList = new ArrayList<>();
-//        ExpenseList.add(new Expense(R.drawable.ic_android, "Dim Sum", "Lunch"));
-//        ExpenseList.add(new Expense(R.drawable.ic_android, "Eggs and Bacon", "Breakfast"));
-//        ExpenseList.add(new Expense(R.drawable.ic_android, "Steak", "Dinner"));
+        ExpenseList.add(new Expense(R.drawable.ic_android, "Dim Sum", "1.00","Lunch"));
+        ExpenseList.add(new Expense(R.drawable.ic_android, "Eggs and Bacon", "1.00","Breakfast"));
+        ExpenseList.add(new Expense(R.drawable.ic_android, "Steak", "1.00","Dinner"));
     }
     public void buildRecyclerView(){
         mRecyclerView = findViewById(R.id.recyclerView);
