@@ -2,13 +2,15 @@ package com.example.expensetracker2;
 
 public class Expense {
     private int mImageResource;
-    private String date;
-    private String name;
-    private String category;
-    private String cost;
+    private String date = "";
+    private String name = "";
+    private String category = "";
+    private String cost = "";
+    private String reason = "";
+    private String note = "";
+
     private double costAmount = 0;
-    private String reason;
-    private String note;
+    private int day, month, year;
 
     public Expense(int imageResource, String newName, String newCosts, String newReason){
         mImageResource = imageResource;
@@ -22,8 +24,11 @@ public class Expense {
         cost = modCost;
         reason = modReason;
     }
-    public void changeText1(String text){
-        name = text;
+    public void extractDate(String date){
+        String[] extractedDate = date.split("/", -1);
+        month = Integer.parseInt(extractedDate[0]);
+        day = Integer.parseInt(extractedDate[1]);
+        year = Integer.parseInt(extractedDate[2]);
     }
     public int getImageResource(){
         return mImageResource;
@@ -35,4 +40,7 @@ public class Expense {
         return reason;
     }
     public String getCost() { return cost; }
+    public String getNote() {return note;}
+    public String getDate() {return date;}
+    public String getCategory() {return category;}
 }
