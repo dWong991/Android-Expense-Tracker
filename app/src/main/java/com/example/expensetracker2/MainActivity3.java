@@ -5,10 +5,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -18,20 +21,13 @@ public class MainActivity3 extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     public static ExpenseAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManger;
-    private Button buttonInsert;
-    private Button buttonRemove;
-    private EditText editTextInsert;
-    private EditText editTextRemove;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-        //createExpenseList();
         buildRecyclerView();
-        //setButtons();
-
     }
 
     public static void insertItem(String name, String costs, String reason){
@@ -47,10 +43,13 @@ public class MainActivity3 extends AppCompatActivity {
         ExpenseList.get(position).modifyExpense(name, costs, reason);
         mAdapter.notifyItemChanged(position);
     }
-    public void createExpenseList(){
-        ExpenseList.add(new Expense(R.drawable.ic_android, "Dim Sum", "1.00","Lunch"));
-        ExpenseList.add(new Expense(R.drawable.ic_android, "Eggs and Bacon", "1.00","Breakfast"));
-        ExpenseList.add(new Expense(R.drawable.ic_android, "Steak", "1.00","Dinner"));
+    private void saveData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(MainActivity3.ExpenseList);
+        editor.putString("Expense List", json);
+        editor.apply();
     }
     public void buildRecyclerView(){
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -74,29 +73,8 @@ public class MainActivity3 extends AppCompatActivity {
             public void onDeleteClick(int position) {
                 //handle clicks here
                 removeItem(position);
+                saveData();
             }
         });
     }
-//    public void setButtons(){
-//        buttonInsert = findViewById(R.id.button_insert);
-//        buttonRemove = findViewById(R.id.button_remove);
-//        editTextInsert = findViewById(R.id.edittext_insert);
-//        editTextRemove = findViewById(R.id.edittext_remove);
-//
-//        buttonInsert.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int position = Integer.parseInt(editTextInsert.getText().toString());
-//                insertItem(position);
-//            }
-//        });
-//
-//        buttonRemove.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int position = Integer.parseInt(editTextRemove.getText().toString());
-//                removeItem(position);
-//            }
-//        });
-//    }
 }
