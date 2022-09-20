@@ -44,14 +44,13 @@ public class MainActivity extends AppCompatActivity {
     private void loadData(){
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences",MODE_PRIVATE);
         Gson gson = new Gson();
-//        Gson gson2 = new Gson();
         String json = sharedPreferences.getString("Expense List", null);
         Type type = new TypeToken<ArrayList<Expense>>() {}.getType();
-//
-//        String json2 = sharedPreferences.getString("Categories", null);
-//        Type type2 = new TypeToken<ArrayList<String>>() {}.getType();
-
         MainActivity3.ExpenseList = gson.fromJson(json, type);
-//        MainActivity2.Categories = gson2.fromJson(json2, type2);
+
+        Gson gson2 = new Gson();
+        String json2 = sharedPreferences.getString("Categories", null);
+        Type type2 = new TypeToken<ArrayList<String>>() {}.getType();
+        MainActivity2.Categories = gson2.fromJson(json2, type2);
     }
 }

@@ -41,9 +41,9 @@ public class MainActivity2 extends AppCompatActivity {
 
         autoCompleteTextView = findViewById(R.id.AutoCompleteTextview);
         mTextInput = findViewById(R.id.textInputLayout);
-        Categories.add("Food");
-        Categories.add("Utilities");
-        Categories.add("Transportation");
+//        Categories.add("Food");
+//        Categories.add("Utilities");
+//        Categories.add("Transportation");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_item, Categories);
         autoCompleteTextView.setAdapter(adapter);
 
@@ -60,6 +60,7 @@ public class MainActivity2 extends AppCompatActivity {
                     String text = String.valueOf(autoCompleteTextView.getText());
                     if(!Categories.contains(text)){
                         adapter.add(text);
+                        Categories.add(text);
                     }
                     int position = intent.getIntExtra("position", 0);
                     MainActivity3.changeItem(position, mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString());
@@ -79,6 +80,7 @@ public class MainActivity2 extends AppCompatActivity {
                     String text = String.valueOf(autoCompleteTextView.getText());
                     if(!Categories.contains(text)){
                         adapter.add(text);
+                        Categories.add(text);
                     }
                     MainActivity3.insertItem(mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString());
                     saveData();
@@ -90,12 +92,15 @@ public class MainActivity2 extends AppCompatActivity {
     private void saveData(){
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+
         Gson gson = new Gson();
-//        Gson gson2 = new Gson();
         String json = gson.toJson(MainActivity3.ExpenseList);
         editor.putString("Expense List", json);
-//        String json2 = gson2.toJson(Categories);
-//        editor.putString("Categories", json2);
+
+        Gson gson2 = new Gson();
+        String json2 = gson2.toJson(Categories);
+        editor.putString("Categories", json2);
+
         editor.apply();
     }
     public void populateFields(){
