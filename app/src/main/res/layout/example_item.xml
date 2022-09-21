@@ -38,9 +38,9 @@
             android:id="@+id/image_delete"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_delete"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_delete" />
 
         <TextView
             android:id="@+id/textViewCost"

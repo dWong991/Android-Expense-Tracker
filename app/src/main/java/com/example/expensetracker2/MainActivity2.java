@@ -2,6 +2,8 @@ package com.example.expensetracker2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -18,7 +21,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-
+import java.util.Calendar;
 
 
 public class MainActivity2 extends AppCompatActivity {
@@ -31,19 +34,22 @@ public class MainActivity2 extends AppCompatActivity {
     public TextInputLayout mTextInput;
     public AutoCompleteTextView autoCompleteTextView;
     public static ArrayList<String> Categories = new ArrayList<>();
+    private DatePickerDialog datePickerDialog;
+    private Button dateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        Intent intent = getIntent();
 
+
+        initDatePicker();
+        dateButton = findViewById(R.id.datePickerButton);
+        dateButton.setText(getTodaysDate());
+        Intent intent = getIntent();
 
         autoCompleteTextView = findViewById(R.id.AutoCompleteTextview);
         mTextInput = findViewById(R.id.textInputLayout);
-//        Categories.add("Food");
-//        Categories.add("Utilities");
-//        Categories.add("Transportation");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_item, Categories);
         autoCompleteTextView.setAdapter(adapter);
 
@@ -115,5 +121,65 @@ public class MainActivity2 extends AppCompatActivity {
         mTextView2.setText(temp2);
         mTextView3 = findViewById(R.id.editCost);
         mTextView3.setText(temp3);
+    }
+    private void initDatePicker(){
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                String date = makeDateString(day, month, year);
+                dateButton.setText(date);
+            }
+        };
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+        datePickerDialog = new DatePickerDialog(this, style, dateSetListener,year, month, day);
+    }
+    private String makeDateString(int day, int month, int year){
+        return month + "/" + day + "/" + year;
+    }
+    private String getMonthFormat(int month){
+        switch(month){
+            case 1:
+                return "JAN";
+            case 2:
+                return "FEB";
+            case 3:
+                return "MAR";
+            case 4:
+                return "APR";
+            case 5:
+                return "MAY";
+            case 6:
+                return "JUN";
+            case 7:
+                return "JUL";
+            case 8:
+                return "AUG";
+            case 9:
+                return "SEPT";
+            case 10:
+                return "OCT";
+            case 11:
+                return "NOV";
+            case 12:
+                return "DEC";
+            default:
+                return "JAN";
+        }
+    }
+    public void openDatePicker(View v){
+        datePickerDialog.show();
+    }
+    private String getTodaysDate() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        month = month + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        return makeDateString(day, month, year);
     }
 }
