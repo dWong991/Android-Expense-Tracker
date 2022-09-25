@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,18 +37,20 @@ public class MainActivity2 extends AppCompatActivity {
     public static ArrayList<String> Categories = new ArrayList<>();
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
+    String saveDate = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-
+        //set up for date picker widget
         initDatePicker();
         dateButton = findViewById(R.id.datePickerButton);
         dateButton.setText(getTodaysDate());
         Intent intent = getIntent();
 
+        //set up for category picker widget
         autoCompleteTextView = findViewById(R.id.AutoCompleteTextview);
         mTextInput = findViewById(R.id.textInputLayout);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_item, Categories);
@@ -69,7 +72,7 @@ public class MainActivity2 extends AppCompatActivity {
                         Categories.add(text);
                     }
                     int position = intent.getIntExtra("position", 0);
-                    MainActivity3.changeItem(position, mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString());
+                    MainActivity3.changeItem(position, mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString(), text, dateButton.getText().toString());
                     saveData();
                     finish();
                 }
@@ -80,6 +83,10 @@ public class MainActivity2 extends AppCompatActivity {
             mEditText2 = findViewById(R.id.editReason);
             mEditText3 = findViewById(R.id.editCost);
             Button submitButton = findViewById(R.id.buttonSubmit);
+
+
+
+
             submitButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
@@ -88,7 +95,8 @@ public class MainActivity2 extends AppCompatActivity {
                         adapter.add(text);
                         Categories.add(text);
                     }
-                    MainActivity3.insertItem(mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString());
+
+                    MainActivity3.insertItem(mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString(), text, dateButton.getText().toString());
                     saveData();
                     finish();
                 }
@@ -115,12 +123,17 @@ public class MainActivity2 extends AppCompatActivity {
         String temp = MainActivity3.ExpenseList.get(position).getName();
         String temp2 = MainActivity3.ExpenseList.get(position).getReason();
         String temp3 = MainActivity3.ExpenseList.get(position).getCost();
+        String temp4 = MainActivity3.ExpenseList.get(position).getCategory();
+        String temp5 = MainActivity3.ExpenseList.get(position).getDate();
         mTextView1 = findViewById(R.id.editName);
         mTextView1.setText(temp);
         mTextView2 = findViewById(R.id.editReason);
         mTextView2.setText(temp2);
         mTextView3 = findViewById(R.id.editCost);
         mTextView3.setText(temp3);
+        autoCompleteTextView = findViewById(R.id.AutoCompleteTextview);
+        autoCompleteTextView.setText(temp4);
+        dateButton.setText(temp5);
     }
     private void initDatePicker(){
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {

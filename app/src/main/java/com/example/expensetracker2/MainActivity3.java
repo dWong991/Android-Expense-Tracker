@@ -30,8 +30,8 @@ public class MainActivity3 extends AppCompatActivity {
         buildRecyclerView();
     }
 
-    public static void insertItem(String name, String costs, String reason){
-        ExpenseList.add(new Expense(R.drawable.ic_android, name, costs, reason));
+    public static void insertItem(String name, String costs, String reason, String category, String date){
+        ExpenseList.add(new Expense(R.drawable.ic_android, name, costs, reason, category, date));
         //mAdapter.notifyItemInserted(position);
     }
 
@@ -39,8 +39,8 @@ public class MainActivity3 extends AppCompatActivity {
         ExpenseList.remove(position);
         mAdapter.notifyItemRemoved(position);
     }
-    public static void changeItem(int position, String name, String costs, String reason){
-        ExpenseList.get(position).modifyExpense(name, costs, reason);
+    public static void changeItem(int position, String name, String costs, String reason, String category, String date){
+        ExpenseList.get(position).modifyExpense(name, costs, reason, category,date);
         mAdapter.notifyItemChanged(position);
     }
     private void saveData(){
