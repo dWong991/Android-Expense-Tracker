@@ -12,7 +12,7 @@ public class Expense {
     private double costAmount = 0;
     private int day, month, year;
 
-    public Expense(int imageResource, String newName, String newCosts, String newReason, String newCategory, String newDate){
+    public Expense(int imageResource, String newName, String newCosts, String newReason, String newCategory, String newDate, String newNote){
         mImageResource = imageResource;
         name = newName;
         cost = newCosts;
@@ -21,8 +21,9 @@ public class Expense {
         category = newCategory;
         date = newDate;
         extractDate(date);
+        note = newNote;
     }
-    public void modifyExpense(String modName, String modCost, String modReason, String modCategory, String modDate){
+    public void modifyExpense(String modName, String modCost, String modReason, String modCategory, String modDate, String modNote){
         name = modName;
         cost = modCost;
         costAmount = Double.parseDouble(cost);
@@ -30,6 +31,7 @@ public class Expense {
         category = modCategory;
         date = modDate;
         extractDate(date);
+        note = modNote;
     }
     public void extractDate(String date){
         String[] extractedDate = date.split("/", -1);

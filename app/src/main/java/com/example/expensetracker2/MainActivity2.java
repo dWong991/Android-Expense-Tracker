@@ -29,15 +29,16 @@ public class MainActivity2 extends AppCompatActivity {
     public TextView mTextView1;
     public TextView mTextView2;
     public TextView mTextView3;
+    public TextView mTextView4;
     public EditText mEditText1;
     public EditText mEditText2;
     public EditText mEditText3;
+    public EditText mEditText4;
     public TextInputLayout mTextInput;
     public AutoCompleteTextView autoCompleteTextView;
     public static ArrayList<String> Categories = new ArrayList<>();
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
-    String saveDate = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class MainActivity2 extends AppCompatActivity {
             mEditText1 = findViewById(R.id.editName);
             mEditText2 = findViewById(R.id.editReason);
             mEditText3 = findViewById(R.id.editCost);
+            mEditText4 = findViewById(R.id.editNotes);
             Button submitButton = findViewById(R.id.buttonSubmit);
             submitButton.setText("Update");
             submitButton.setOnClickListener(new View.OnClickListener(){
@@ -72,7 +74,7 @@ public class MainActivity2 extends AppCompatActivity {
                         Categories.add(text);
                     }
                     int position = intent.getIntExtra("position", 0);
-                    MainActivity3.changeItem(position, mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString(), text, dateButton.getText().toString());
+                    MainActivity3.changeItem(position, mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString(), text, dateButton.getText().toString(), mEditText4.getText().toString());
                     saveData();
                     finish();
                 }
@@ -82,11 +84,8 @@ public class MainActivity2 extends AppCompatActivity {
             mEditText1 = findViewById(R.id.editName);
             mEditText2 = findViewById(R.id.editReason);
             mEditText3 = findViewById(R.id.editCost);
+            mEditText4 = findViewById(R.id.editNotes);
             Button submitButton = findViewById(R.id.buttonSubmit);
-
-
-
-
             submitButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
@@ -95,8 +94,7 @@ public class MainActivity2 extends AppCompatActivity {
                         adapter.add(text);
                         Categories.add(text);
                     }
-
-                    MainActivity3.insertItem(mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString(), text, dateButton.getText().toString());
+                    MainActivity3.insertItem(mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString(), text, dateButton.getText().toString(), mEditText4.getText().toString());
                     saveData();
                     finish();
                 }
@@ -125,15 +123,19 @@ public class MainActivity2 extends AppCompatActivity {
         String temp3 = MainActivity3.ExpenseList.get(position).getCost();
         String temp4 = MainActivity3.ExpenseList.get(position).getCategory();
         String temp5 = MainActivity3.ExpenseList.get(position).getDate();
+        String temp6 = MainActivity3.ExpenseList.get(position).getNote();
         mTextView1 = findViewById(R.id.editName);
         mTextView1.setText(temp);
         mTextView2 = findViewById(R.id.editReason);
         mTextView2.setText(temp2);
         mTextView3 = findViewById(R.id.editCost);
         mTextView3.setText(temp3);
+        mTextView4 = findViewById(R.id.editNotes);
+        mTextView4.setText(temp6);
         autoCompleteTextView = findViewById(R.id.AutoCompleteTextview);
         autoCompleteTextView.setText(temp4);
         dateButton.setText(temp5);
+
     }
     private void initDatePicker(){
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
