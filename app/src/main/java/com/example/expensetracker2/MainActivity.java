@@ -1,12 +1,10 @@
 package com.example.expensetracker2;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,13 +33,18 @@ public class MainActivity extends AppCompatActivity {
 
         //initialize the list of expenses and categories saved
         loadData();
+
         Button modifyButton = findViewById(R.id.buttonModify);
         Button addButton = findViewById(R.id.buttonAdd);
+        Button settingsButton = findViewById(R.id.buttonSettings);
+        Button dataButton = findViewById(R.id.buttonData);
 
         //set up pie chart
         pieChart = findViewById(R.id.activity_main_piechart);
         setupPieChart();
         loadPieChartData();
+
+
         //set up button click listener, must be in onCreate() function
         modifyButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -54,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(v.getContext(), MainActivity2.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+        dataButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), MainActivity4.class);
                 startActivityForResult(intent, 1);
             }
         });
