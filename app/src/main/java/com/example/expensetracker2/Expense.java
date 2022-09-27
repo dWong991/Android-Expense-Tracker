@@ -49,6 +49,7 @@ public class Expense {
         return reason;
     }
     public String getCost() { return cost; }
+    public double getCostAmount() { return costAmount; }
     public String getNote() {return note;}
     public String getDate() {return date;}
     public String getCategory() {return category;}

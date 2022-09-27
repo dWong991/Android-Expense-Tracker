@@ -1,10 +1,12 @@
+/*
+    This activity will handle the input and modification of expenses to the list
+ */
 package com.example.expensetracker2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,22 +20,23 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 
 public class MainActivity2 extends AppCompatActivity {
-    public TextView mTextView1;
-    public TextView mTextView2;
-    public TextView mTextView3;
-    public TextView mTextView4;
-    public EditText mEditText1;
-    public EditText mEditText2;
-    public EditText mEditText3;
-    public EditText mEditText4;
+
+    public TextView mTextViewName;
+    public TextView mTextViewReason;
+    public TextView mTextViewCost;
+    public TextView mTextViewNote;
+
+    public EditText mEditName;
+    public EditText mEditReason;
+    public EditText mEditCost;
+    public EditText mEditNote;
+
     public TextInputLayout mTextInput;
     public AutoCompleteTextView autoCompleteTextView;
     public static ArrayList<String> Categories = new ArrayList<>();
@@ -51,19 +54,22 @@ public class MainActivity2 extends AppCompatActivity {
         dateButton.setText(getTodaysDate());
         Intent intent = getIntent();
 
-        //set up for category picker widget
+        //set up for category picker widget (autotext complete to fill guess what category you are entering,
+        //or use drop down menu option
         autoCompleteTextView = findViewById(R.id.AutoCompleteTextview);
         mTextInput = findViewById(R.id.textInputLayout);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_item, Categories);
         autoCompleteTextView.setAdapter(adapter);
 
+        //set up for the following field functions
+        mEditName = findViewById(R.id.editName);
+        mEditReason = findViewById(R.id.editReason);
+        mEditCost = findViewById(R.id.editCost);
+        mEditNote = findViewById(R.id.editNotes);
+        Button submitButton = findViewById(R.id.buttonSubmit);
+
         if(intent.hasExtra("position") ){
             populateFields();
-            mEditText1 = findViewById(R.id.editName);
-            mEditText2 = findViewById(R.id.editReason);
-            mEditText3 = findViewById(R.id.editCost);
-            mEditText4 = findViewById(R.id.editNotes);
-            Button submitButton = findViewById(R.id.buttonSubmit);
             submitButton.setText("Update");
             submitButton.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -74,18 +80,13 @@ public class MainActivity2 extends AppCompatActivity {
                         Categories.add(text);
                     }
                     int position = intent.getIntExtra("position", 0);
-                    MainActivity3.changeItem(position, mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString(), text, dateButton.getText().toString(), mEditText4.getText().toString());
+                    MainActivity3.changeItem(position, mEditName.getText().toString(), mEditCost.getText().toString(), mEditReason.getText().toString(), text, dateButton.getText().toString(), mEditNote.getText().toString());
                     saveData();
                     finish();
                 }
             });
         }
         else{
-            mEditText1 = findViewById(R.id.editName);
-            mEditText2 = findViewById(R.id.editReason);
-            mEditText3 = findViewById(R.id.editCost);
-            mEditText4 = findViewById(R.id.editNotes);
-            Button submitButton = findViewById(R.id.buttonSubmit);
             submitButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
@@ -94,7 +95,7 @@ public class MainActivity2 extends AppCompatActivity {
                         adapter.add(text);
                         Categories.add(text);
                     }
-                    MainActivity3.insertItem(mEditText1.getText().toString(), mEditText3.getText().toString(), mEditText2.getText().toString(), text, dateButton.getText().toString(), mEditText4.getText().toString());
+                    MainActivity3.insertItem(mEditName.getText().toString(), mEditCost.getText().toString(), mEditReason.getText().toString(), text, dateButton.getText().toString(), mEditNote.getText().toString());
                     saveData();
                     finish();
                 }
@@ -104,11 +105,13 @@ public class MainActivity2 extends AppCompatActivity {
     private void saveData(){
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
+        //save expense list
         Gson gson = new Gson();
         String json = gson.toJson(MainActivity3.ExpenseList);
         editor.putString("Expense List", json);
-
+        //save categories
+        //need to figure out a way to delete improperly entered values, or user HAS to be sure they enter the
+        //correct category, as this is currently permanent
         Gson gson2 = new Gson();
         String json2 = gson2.toJson(Categories);
         editor.putString("Categories", json2);
@@ -118,23 +121,25 @@ public class MainActivity2 extends AppCompatActivity {
     public void populateFields(){
         Intent intent = getIntent();
         int position = intent.getIntExtra("position", 0);
-        String temp = MainActivity3.ExpenseList.get(position).getName();
-        String temp2 = MainActivity3.ExpenseList.get(position).getReason();
-        String temp3 = MainActivity3.ExpenseList.get(position).getCost();
-        String temp4 = MainActivity3.ExpenseList.get(position).getCategory();
-        String temp5 = MainActivity3.ExpenseList.get(position).getDate();
-        String temp6 = MainActivity3.ExpenseList.get(position).getNote();
-        mTextView1 = findViewById(R.id.editName);
-        mTextView1.setText(temp);
-        mTextView2 = findViewById(R.id.editReason);
-        mTextView2.setText(temp2);
-        mTextView3 = findViewById(R.id.editCost);
-        mTextView3.setText(temp3);
-        mTextView4 = findViewById(R.id.editNotes);
-        mTextView4.setText(temp6);
+        //get field values for expense item, might combine to 1 line in teh setText() function later
+        String expenseName = MainActivity3.ExpenseList.get(position).getName();
+        String expenseReason = MainActivity3.ExpenseList.get(position).getReason();
+        String expenseCost = MainActivity3.ExpenseList.get(position).getCost();
+        String expenseCategory = MainActivity3.ExpenseList.get(position).getCategory();
+        String expenseDate = MainActivity3.ExpenseList.get(position).getDate();
+        String expenseNote = MainActivity3.ExpenseList.get(position).getNote();
+
+        mTextViewName = findViewById(R.id.editName);
+        mTextViewName.setText(expenseName);
+        mTextViewReason = findViewById(R.id.editReason);
+        mTextViewReason.setText(expenseReason);
+        mTextViewCost = findViewById(R.id.editCost);
+        mTextViewCost.setText(expenseCost);
+        mTextViewNote = findViewById(R.id.editNotes);
+        mTextViewNote.setText(expenseNote);
         autoCompleteTextView = findViewById(R.id.AutoCompleteTextview);
-        autoCompleteTextView.setText(temp4);
-        dateButton.setText(temp5);
+        autoCompleteTextView.setText(expenseCategory);
+        dateButton.setText(expenseDate);
 
     }
     private void initDatePicker(){
@@ -155,36 +160,6 @@ public class MainActivity2 extends AppCompatActivity {
     }
     private String makeDateString(int day, int month, int year){
         return month + "/" + day + "/" + year;
-    }
-    private String getMonthFormat(int month){
-        switch(month){
-            case 1:
-                return "JAN";
-            case 2:
-                return "FEB";
-            case 3:
-                return "MAR";
-            case 4:
-                return "APR";
-            case 5:
-                return "MAY";
-            case 6:
-                return "JUN";
-            case 7:
-                return "JUL";
-            case 8:
-                return "AUG";
-            case 9:
-                return "SEPT";
-            case 10:
-                return "OCT";
-            case 11:
-                return "NOV";
-            case 12:
-                return "DEC";
-            default:
-                return "JAN";
-        }
     }
     public void openDatePicker(View v){
         datePickerDialog.show();

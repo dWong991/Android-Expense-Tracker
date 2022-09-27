@@ -29,20 +29,22 @@ public class MainActivity3 extends AppCompatActivity {
         setContentView(R.layout.activity_main3);
         buildRecyclerView();
     }
-
+    //used to add a new item to the list
     public static void insertItem(String name, String costs, String reason, String category, String date, String note){
         ExpenseList.add(new Expense(R.drawable.ic_android, name, costs, reason, category, date, note));
         //mAdapter.notifyItemInserted(position);
     }
-
+    //when trash can image is clicked, delete from shared preferences list
     public void removeItem(int position){
         ExpenseList.remove(position);
         mAdapter.notifyItemRemoved(position);
     }
+    //used to modify an item currently selected from the list
     public static void changeItem(int position, String name, String costs, String reason, String category, String date, String note){
         ExpenseList.get(position).modifyExpense(name, costs, reason, category,date, note);
         mAdapter.notifyItemChanged(position);
     }
+    //used to save the list of items
     private void saveData(){
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -56,7 +58,6 @@ public class MainActivity3 extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManger = new LinearLayoutManager(this);
         mAdapter = new ExpenseAdapter(ExpenseList);
-
         mRecyclerView.setLayoutManager(mLayoutManger);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new ExpenseAdapter.OnItemClickListener() {
@@ -64,7 +65,7 @@ public class MainActivity3 extends AppCompatActivity {
             public void onItemClick(int position, View v) {
                 //handle clicks here
                 //changeItem(position, "clicked");
-                //open activity2
+                //open activity2 to make modifications to the expense item
                 Intent intent = new Intent(v.getContext(), MainActivity2.class);
                 intent.putExtra("position", position);
                 startActivityForResult(intent, 1);
