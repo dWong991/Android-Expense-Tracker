@@ -28,16 +28,19 @@ public class MainActivity4 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
         barChart = findViewById(R.id.barChart_view);
-        //setupBarChart();
+        setupBarChart();
         loadBarChartData();
 
     }
+
+
+
     private void setupBarChart(){
 
 
         Legend l = barChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
         l.setDrawInside(false);
         l.setEnabled(true);
@@ -99,9 +102,6 @@ public class MainActivity4 extends AppCompatActivity {
         barChart.setData(data);
         barChart.getDescription().setText("Expenses");
         barChart.animateY(1400, Easing.EaseInOutQuad);
-
-
-
     }
 
 }

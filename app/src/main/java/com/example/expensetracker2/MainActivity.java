@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     public static PieChart pieChart;
@@ -73,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
         //rebuild data each time we return back to main activity?
         //maybe check for a way to see if the data is modified then call loadPieChartData()
         //but for now it works as intended, will optimize later
+        //update grand total display for the chart whenever the main activity1 is resumed
+        String total = GetTotal(MainActivity3.ExpenseList);
+        pieChart.setCenterText(total);
         loadPieChartData();
     }
 
@@ -96,7 +100,10 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setUsePercentValues(true);
         pieChart.setEntryLabelTextSize(12);
         pieChart.setEntryLabelColor(Color.BLACK);
-        pieChart.setCenterText("Expense by Category");
+        //update grand total display for the chart whenever the app is loaded
+        String total = GetTotal(MainActivity3.ExpenseList);
+        pieChart.setCenterText(total);
+
         pieChart.setCenterTextSize(24);
 
         pieChart.setCenterTextColor(Color.BLACK);
@@ -146,10 +153,6 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, Double> expenseDataMap = new HashMap<>();
 
         double total = 0.0;
-//        for(int i = 0; i < MainActivity3.ExpenseList.size(); i++){
-//            expenseDataMap.merge(MainActivity3.ExpenseList.get(i).getCategory(), MainActivity3.ExpenseList.get(i).getCostAmount(), Double::sum);
-//            total += MainActivity3.ExpenseList.get(i).getCostAmount();
-//        }
         for(int i = 0; i < MainActivity3.ExpenseList.size(); i++){
             if(expenseDataMap.containsKey(MainActivity3.ExpenseList.get(i).getCategory())){
                 expenseDataMap.put(MainActivity3.ExpenseList.get(i).getCategory(), expenseDataMap.get(MainActivity3.ExpenseList.get(i).getCategory()) + MainActivity3.ExpenseList.get(i).getCostAmount());
@@ -165,4 +168,11 @@ public class MainActivity extends AppCompatActivity {
         return ExpenseChartData;
     }
 
+    public String GetTotal(ArrayList<Expense> filteredExpenseList){
+        double expense_total = 0.00;
+        for(int i = 0; i < filteredExpenseList.size(); i++){
+            expense_total += filteredExpenseList.get(i).getCostAmount();
+        }
+        return "$" + String.format(Locale.US,"%.2f", expense_total);
+    }
 }
