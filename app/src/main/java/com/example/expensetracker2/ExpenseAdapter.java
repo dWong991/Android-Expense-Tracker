@@ -30,6 +30,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         public TextView mTextView1;
         public TextView mTextView2;
         public TextView mTextView3;
+        public TextView mTextView4;
         public ImageView mDeleteImage;
 
         public ViewHolder(View itemView, OnItemClickListener listener) {
@@ -38,6 +39,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
             mTextView1 = itemView.findViewById(R.id.textView);
             mTextView2 = itemView.findViewById(R.id.textView2);
             mTextView3 = itemView.findViewById(R.id.textViewCost);
+            mTextView4 = itemView.findViewById(R.id.textViewDate);
             mDeleteImage = itemView.findViewById(R.id.image_delete);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,6 +85,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         holder.mTextView1.setText(currentItem.getName());
         holder.mTextView2.setText(currentItem.getReason());
         holder.mTextView3.setText("$" + currentItem.getCost());
+        holder.mTextView4.setText(currentItem.getDate());
     }
 
     @Override
