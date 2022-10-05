@@ -34,6 +34,9 @@ import java.util.Calendar;
 public class MainActivity4 extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     BarChart barChart;
     public static Spinner spinner2;
+    public static Spinner spinner;
+    public ArrayAdapter<CharSequence> adapter;
+    public ArrayAdapter<Integer> adapter2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +48,14 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         Button monthButton = findViewById(R.id.buttonMonth);
         Button yearButton = findViewById(R.id.buttonYear);
 
-        Spinner spinner = findViewById(R.id.spinnerMonth);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.months, android.R.layout.simple_spinner_item);
+        spinner = findViewById(R.id.spinnerMonth);
+        adapter = ArrayAdapter.createFromResource(this, R.array.months, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
         spinner2 = findViewById(R.id.spinnerYear);
-        ArrayAdapter<Integer> adapter2 = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, populateYear());
+        adapter2 = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, populateYear());
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
         spinner2.setOnItemSelectedListener(this);
@@ -78,15 +81,49 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         }
         return yearList;
     }
+
+    public int getYearIndex(Spinner spinner, int year){
+        if(spinner.getCount() == 0) {
+            return -1;
+        }
+        else {
+
+            for (int i = 0; i < spinner.getCount(); i++) {
+                if (spinner.getItemAtPosition(i) == year) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }
+
+    public int getMonthIndex(Spinner spinner, int month){
+        String[] months = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
+        String monthString = months[month];
+        if(monthString == null || spinner.getCount() == 0) {
+            return -1;
+        }
+        else {
+            for (int i = 0; i < spinner.getCount(); i++) {
+                if (spinner.getItemAtPosition(i).toString().equals(monthString)){
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }
     private String makeDateString(int day, int month, int year){
         return month + "/" + day + "/" + year;
     }
+
     public void dayPicker(View view){
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                String date = makeDateString(day, month, year);
+                spinner.setSelection(getMonthIndex(spinner, month), true);
+                spinner2.setSelection(getYearIndex(spinner2, "2020"), true);
+                adapter.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
             }
         };
         Calendar cal = Calendar.getInstance();
@@ -97,40 +134,6 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, style, dateSetListener,year, month, day);
         datePickerDialog.show();
     }
-    public void monthPicker(View view){
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                String date = makeDateString(day, month, year);
-            }
-        };
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int style = AlertDialog.THEME_HOLO_LIGHT;
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, style, dateSetListener,year, month, day);
-        datePickerDialog.show();
-    }
-    public void yearPicker(View view){
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                String date = makeDateString(day, month, year);
-            }
-        };
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int style = AlertDialog.THEME_HOLO_LIGHT;
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, style, dateSetListener,year, month, day);
-        datePickerDialog.show();
-    }
-
-
 
     private void setupBarChart(){
         Legend l = barChart.getLegend();
@@ -202,6 +205,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String text = adapterView.getItemAtPosition(i).toString();
+
         Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT);
     }
 

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ExpenseTracker2</string>
     <string-array name="months">
+        <item>ALL</item>
         <item>JAN</item>
         <item>FEB</item>
         <item>MAR</item>
