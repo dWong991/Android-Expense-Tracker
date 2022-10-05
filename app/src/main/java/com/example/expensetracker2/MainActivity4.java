@@ -33,6 +33,7 @@ import java.util.Calendar;
 
 public class MainActivity4 extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     BarChart barChart;
+    public static Spinner spinner2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +51,19 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
-        Spinner spinner2 = findViewById(R.id.spinnerYear);
+        spinner2 = findViewById(R.id.spinnerYear);
+        ArrayAdapter<Integer> adapter2 = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, populateYear());
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner2.setAdapter(adapter2);
+        spinner2.setOnItemSelectedListener(this);
+    }
+    protected void onResume(){
+        super.onResume();
+        //rebuild data each time we return back to main activity?
+        //maybe check for a way to see if the data is modified then call loadPieChartData()
+        //but for now it works as intended, will optimize later
+        //update grand total display for the chart whenever the main activity1 is resumed
+        spinner2 = findViewById(R.id.spinnerYear);
         ArrayAdapter<Integer> adapter2 = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, populateYear());
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
