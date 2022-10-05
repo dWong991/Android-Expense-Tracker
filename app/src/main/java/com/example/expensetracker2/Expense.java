@@ -53,4 +53,7 @@ public class Expense {
     public String getNote() {return note;}
     public String getDate() {return date;}
     public String getCategory() {return category;}
+    public int getDay(){ return day;}
+    public int getMonth(){ return month;}
+    public int getYear(){ return year;}
 }

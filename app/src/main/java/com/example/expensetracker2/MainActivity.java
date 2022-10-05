@@ -103,12 +103,9 @@ public class MainActivity extends AppCompatActivity {
         //update grand total display for the chart whenever the app is loaded
         String total = GetTotal(MainActivity3.ExpenseList);
         pieChart.setCenterText(total);
-
         pieChart.setCenterTextSize(24);
-
         pieChart.setCenterTextColor(Color.BLACK);
-
-        pieChart.getDescription().setEnabled(false);
+        pieChart.getDescription().setEnabled(true);
 
         Legend l = pieChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);

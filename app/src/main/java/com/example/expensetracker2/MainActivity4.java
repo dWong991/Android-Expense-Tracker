@@ -2,8 +2,17 @@ package com.example.expensetracker2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
@@ -20,27 +29,100 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
-public class MainActivity4 extends AppCompatActivity {
+public class MainActivity4 extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     BarChart barChart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
         barChart = findViewById(R.id.barChart_view);
-        setupBarChart();
-        loadBarChartData();
+        //setupBarChart();
+        //loadBarChartData();
+        Button dayButton = findViewById(R.id.buttonDay);
+        Button monthButton = findViewById(R.id.buttonMonth);
+        Button yearButton = findViewById(R.id.buttonYear);
 
+        Spinner spinner = findViewById(R.id.spinnerMonth);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.months, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
+        Spinner spinner2 = findViewById(R.id.spinnerYear);
+        ArrayAdapter<Integer> adapter2 = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, populateYear());
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner2.setAdapter(adapter2);
+        spinner2.setOnItemSelectedListener(this);
+    }
+    public ArrayList<Integer> populateYear(){
+        ArrayList<Integer> yearList = new ArrayList<>();
+        for(int i = 0; i < MainActivity3.ExpenseList.size(); i++){
+            if(!yearList.contains(MainActivity3.ExpenseList.get(i).getYear())){
+                yearList.add(MainActivity3.ExpenseList.get(i).getYear());
+            }
+        }
+        return yearList;
+    }
+    private String makeDateString(int day, int month, int year){
+        return month + "/" + day + "/" + year;
+    }
+    public void dayPicker(View view){
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                String date = makeDateString(day, month, year);
+            }
+        };
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, style, dateSetListener,year, month, day);
+        datePickerDialog.show();
+    }
+    public void monthPicker(View view){
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                String date = makeDateString(day, month, year);
+            }
+        };
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, style, dateSetListener,year, month, day);
+        datePickerDialog.show();
+    }
+    public void yearPicker(View view){
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                String date = makeDateString(day, month, year);
+            }
+        };
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, style, dateSetListener,year, month, day);
+        datePickerDialog.show();
     }
 
 
 
     private void setupBarChart(){
-
-
         Legend l = barChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
         l.setDrawInside(false);
         l.setEnabled(true);
@@ -104,4 +186,14 @@ public class MainActivity4 extends AppCompatActivity {
         barChart.animateY(1400, Easing.EaseInOutQuad);
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String text = adapterView.getItemAtPosition(i).toString();
+        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }
