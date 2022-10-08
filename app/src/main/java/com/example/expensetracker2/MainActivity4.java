@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -35,18 +36,19 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
     BarChart barChart;
     public static Spinner spinner2;
     public static Spinner spinner;
+    public TextView dayView;
     public ArrayAdapter<CharSequence> adapter;
     public ArrayAdapter<String> adapter2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
-        barChart = findViewById(R.id.barChart_view);
+        //barChart = findViewById(R.id.barChart_view);
+        dayView = findViewById(R.id.textViewDay);
         //setupBarChart();
         //loadBarChartData();
         Button dayButton = findViewById(R.id.buttonDay);
         Button monthButton = findViewById(R.id.buttonMonth);
-        Button yearButton = findViewById(R.id.buttonYear);
 
         spinner = findViewById(R.id.spinnerMonth);
         adapter = ArrayAdapter.createFromResource(this, R.array.months, android.R.layout.simple_spinner_item);
@@ -74,7 +76,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
     }
     public ArrayList<String> populateYear(){
         ArrayList<String> yearList = new ArrayList<>();
-        yearList.add("All");
+        yearList.add("ALL");
         for(int i = 0; i < MainActivity3.ExpenseList.size(); i++){
             if(!yearList.contains(String.valueOf(MainActivity3.ExpenseList.get(i).getYear()))){
                 yearList.add(String.valueOf(MainActivity3.ExpenseList.get(i).getYear()));
@@ -99,9 +101,9 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
     }
 
     public int getMonthIndex(Spinner spinner, int month){
-        String[] months = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
+        String[] months = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEPT", "OCT", "NOV", "DEC"};
         String monthString = months[month];
-        if(monthString == null || spinner.getCount() == 0) {
+        if(spinner.getCount() == 0) {
             return -1;
         }
         else {
@@ -113,9 +115,6 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
             return -1;
         }
     }
-    private String makeDateString(int day, int month, int year){
-        return month + "/" + day + "/" + year;
-    }
 
     public void dayPicker(View view){
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -125,6 +124,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
                 spinner2.setSelection(getYearIndex(spinner2, year), true);
                 adapter.notifyDataSetChanged();
                 adapter2.notifyDataSetChanged();
+                dayView.setText(String.valueOf(day));
             }
         };
         Calendar cal = Calendar.getInstance();
@@ -206,12 +206,19 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String text = adapterView.getItemAtPosition(i).toString();
-
         Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    public void resetFilters(View view){
+        spinner.setSelection(0);
+        spinner2.setSelection(0);
+        adapter.notifyDataSetChanged();
+        adapter2.notifyDataSetChanged();
+        dayView.setText("ALL");
     }
 }
