@@ -6,10 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity4">
+
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart_view"
-        android:layout_width="413dp"
-        android:layout_height="470dp"
+        android:layout_width="411dp"
+        android:layout_height="370dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

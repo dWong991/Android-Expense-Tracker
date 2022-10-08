@@ -43,10 +43,10 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
-        //barChart = findViewById(R.id.barChart_view);
+        barChart = findViewById(R.id.barChart_view);
         dayView = findViewById(R.id.textViewDay);
-        //setupBarChart();
-        //loadBarChartData();
+        setupBarChart();
+        loadBarChartData();
         Button dayButton = findViewById(R.id.buttonDay);
         Button monthButton = findViewById(R.id.buttonMonth);
 
@@ -138,20 +138,20 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
 
     private void setupBarChart(){
         Legend l = barChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
+        l.setDrawInside(true);
         l.setEnabled(true);
     }
 
     private void loadBarChartData(){
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(1, 200));
-        entries.add(new BarEntry(2, 400));
-        entries.add(new BarEntry(3, 50));
-        entries.add(new BarEntry(4, 900));
-        entries.add(new BarEntry(5, 550));
+        entries.add(new BarEntry(0, 200));
+        entries.add(new BarEntry(1, 400));
+        entries.add(new BarEntry(2, 50));
+        entries.add(new BarEntry(3, 900));
+        entries.add(new BarEntry(4, 550));
 
 //        ArrayList<BarEntry> entries2 = new ArrayList<>();
 //        entries2.add(new BarEntry(1, 100));
@@ -192,14 +192,20 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
 
 
         //BarDataSet dataSet = new BarDataSet(entries, "Expense Categories");
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        ArrayList<Integer> colors = new ArrayList<>();
+        for(int color: ColorTemplate.MATERIAL_COLORS){
+            colors.add(color);
+        }
+        for(int color: ColorTemplate.VORDIPLOM_COLORS){
+            colors.add(color);
+        }
+        dataSet.setColors(colors);
         dataSet.setValueTextSize(16f);
         BarData data = new BarData(dataSet);
         //data.setDrawValues(true);
         data.setValueTextColor(Color.BLACK);
-        barChart.setFitBars(true);
+        //barChart.setFitBars(true);
         barChart.setData(data);
-        barChart.getDescription().setText("Expenses");
         barChart.animateY(1400, Easing.EaseInOutQuad);
     }
 
