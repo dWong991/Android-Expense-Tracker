@@ -36,7 +36,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
     public static Spinner spinner2;
     public static Spinner spinner;
     public ArrayAdapter<CharSequence> adapter;
-    public ArrayAdapter<Integer> adapter2;
+    public ArrayAdapter<String> adapter2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +55,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         spinner.setOnItemSelectedListener(this);
 
         spinner2 = findViewById(R.id.spinnerYear);
-        adapter2 = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, populateYear());
+        adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, populateYear());
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
         spinner2.setOnItemSelectedListener(this);
@@ -67,16 +67,17 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         //but for now it works as intended, will optimize later
         //update grand total display for the chart whenever the main activity1 is resumed
         spinner2 = findViewById(R.id.spinnerYear);
-        ArrayAdapter<Integer> adapter2 = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, populateYear());
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, populateYear());
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
         spinner2.setOnItemSelectedListener(this);
     }
-    public ArrayList<Integer> populateYear(){
-        ArrayList<Integer> yearList = new ArrayList<>();
+    public ArrayList<String> populateYear(){
+        ArrayList<String> yearList = new ArrayList<>();
+        yearList.add("All");
         for(int i = 0; i < MainActivity3.ExpenseList.size(); i++){
-            if(!yearList.contains(MainActivity3.ExpenseList.get(i).getYear())){
-                yearList.add(MainActivity3.ExpenseList.get(i).getYear());
+            if(!yearList.contains(String.valueOf(MainActivity3.ExpenseList.get(i).getYear()))){
+                yearList.add(String.valueOf(MainActivity3.ExpenseList.get(i).getYear()));
             }
         }
         return yearList;
@@ -89,7 +90,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         else {
 
             for (int i = 0; i < spinner.getCount(); i++) {
-                if (spinner.getItemAtPosition(i) == year) {
+                if (spinner.getItemAtPosition(i).toString().equals(String.valueOf(year))) {
                     return i;
                 }
             }
@@ -121,7 +122,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 spinner.setSelection(getMonthIndex(spinner, month), true);
-                spinner2.setSelection(getYearIndex(spinner2, "2020"), true);
+                spinner2.setSelection(getYearIndex(spinner2, year), true);
                 adapter.notifyDataSetChanged();
                 adapter2.notifyDataSetChanged();
             }
