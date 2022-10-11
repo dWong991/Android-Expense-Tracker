@@ -80,15 +80,12 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
     }
     protected void onResume(){
         super.onResume();
-        //rebuild data each time we return back to main activity?
-        //maybe check for a way to see if the data is modified then call loadPieChartData()
-        //but for now it works as intended, will optimize later
-        //update grand total display for the chart whenever the main activity1 is resumed
 
-        String total = "$" + GetTotal(MainActivity3.ExpenseList);
-        pieChart.setCenterText("Total \n" + total);
+        double total = GetTotal(MainActivity3.ExpenseList);
+        pieChart.setCenterText("Total \n" + "$" + String.format("%.2f", total));
         loadPieChartData();
 
+        //update spinners everytime we return to mainactivity4 based on added values
         spinner2 = findViewById(R.id.spinnerYear);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, populateYear());
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -174,8 +171,8 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         pieChart.setEntryLabelTextSize(12);
         pieChart.setEntryLabelColor(Color.BLACK);
         //update grand total display for the chart whenever the app is loaded
-        String total = "$" + GetTotal(MainActivity3.ExpenseList);
-        pieChart.setCenterText("Total \n" + total);
+        double total = GetTotal(MainActivity3.ExpenseList);
+        pieChart.setCenterText("Total \n" + "$" + String.format("%.2f", total));
         pieChart.setCenterTextSize(24);
         pieChart.setCenterTextColor(Color.BLACK);
         pieChart.getDescription().setEnabled(false);

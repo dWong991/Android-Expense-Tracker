@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         //maybe check for a way to see if the data is modified then call loadPieChartData()
         //but for now it works as intended, will optimize later
         //update grand total display for the chart whenever the main activity1 is resumed
-        String total = "$" + GetTotal(MainActivity3.ExpenseList);
-        pieChart.setCenterText("Grand Total \n" + total);
+        double total = GetTotal(MainActivity3.ExpenseList);
+        pieChart.setCenterText("Total \n" + "$" + String.format("%.2f", total));
         loadPieChartData();
     }
 
@@ -101,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setEntryLabelTextSize(12);
         pieChart.setEntryLabelColor(Color.BLACK);
         //update grand total display for the chart whenever the app is loaded
-        String total = "$" + GetTotal(MainActivity3.ExpenseList);
-        pieChart.setCenterText("Grand Total" + total);
+        double total = GetTotal(MainActivity3.ExpenseList);
+        pieChart.setCenterText("Total \n" + "$" + String.format("%.2f", total));
         pieChart.setCenterTextSize(24);
         pieChart.setCenterTextColor(Color.BLACK);
         pieChart.getDescription().setEnabled(true);
