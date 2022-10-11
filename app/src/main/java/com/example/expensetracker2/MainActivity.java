@@ -108,10 +108,10 @@ public class MainActivity extends AppCompatActivity {
         pieChart.getDescription().setEnabled(true);
 
         Legend l = pieChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
+        l.setDrawInside(true);
         l.setEnabled(true);
     }
 
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         data.setValueFormatter(new PercentFormatter(pieChart));
         data.setValueTextSize(12f);
         data.setValueTextColor(Color.BLACK);
-
+        pieChart.setExtraBottomOffset(20f);
         pieChart.setData(data);
         //data has changed, and need to refresh
         pieChart.invalidate();

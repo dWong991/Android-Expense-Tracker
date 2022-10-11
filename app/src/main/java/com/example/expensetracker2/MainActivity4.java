@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -31,22 +32,26 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
 
 public class MainActivity4 extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
-    BarChart barChart;
     public static Spinner spinner2;
     public static Spinner spinner;
     public TextView dayView;
     public ArrayAdapter<CharSequence> adapter;
     public ArrayAdapter<String> adapter2;
+    public static PieChart pieChart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
-        barChart = findViewById(R.id.barChart_view);
+
+        pieChart = findViewById(R.id.activity_main4_piechart);
+        setupPieChart();
+        loadPieChartData();
+
         dayView = findViewById(R.id.textViewDay);
-        setupBarChart();
-        loadBarChartData();
         Button dayButton = findViewById(R.id.buttonDay);
         Button monthButton = findViewById(R.id.buttonMonth);
 
@@ -68,6 +73,11 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         //maybe check for a way to see if the data is modified then call loadPieChartData()
         //but for now it works as intended, will optimize later
         //update grand total display for the chart whenever the main activity1 is resumed
+
+        String total = GetTotal(MainActivity3.ExpenseList);
+        pieChart.setCenterText(total);
+        loadPieChartData();
+
         spinner2 = findViewById(R.id.spinnerYear);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, populateYear());
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -136,78 +146,6 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         datePickerDialog.show();
     }
 
-    private void setupBarChart(){
-        Legend l = barChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(true);
-        l.setEnabled(true);
-    }
-
-    private void loadBarChartData(){
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, 200));
-        entries.add(new BarEntry(1, 400));
-        entries.add(new BarEntry(2, 50));
-        entries.add(new BarEntry(3, 900));
-        entries.add(new BarEntry(4, 550));
-
-//        ArrayList<BarEntry> entries2 = new ArrayList<>();
-//        entries2.add(new BarEntry(1, 100));
-//        entries2.add(new BarEntry(2, 500));
-//        entries2.add(new BarEntry(3, 660));
-//        entries2.add(new BarEntry(4, 200));
-//        entries2.add(new BarEntry(5, 50));
-//
-        BarDataSet dataSet = new BarDataSet(entries, "DataSet1");
-//        barDataSet1.setColor(Color.RED);
-//
-//        BarDataSet barDataSet2 = new BarDataSet(entries2, "DataSet2");
-//        barDataSet1.setColor(Color.BLACK);
-//
-//        BarData data = new BarData(barDataSet1,barDataSet2);
-//        barChart.setData(data);
-        String[] days = new String[]{"UTILITIES", "TRANSPORTATION", "FOOD"};
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
-//        xAxis.setCenterAxisLabels(true);
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setGranularity(1);
-//        xAxis.setGranularityEnabled(true);
-//
-//        barChart.setDragEnabled(true);
-//        barChart.setVisibleXRangeMaximum(3);
-//
-//        float barSpace = 0.08f;
-//        float groupSpace = 0.44f;
-//        data.setBarWidth(0.10f);
-//
-//        barChart.getXAxis().setAxisMinimum(0);
-//        barChart.getXAxis().setAxisMaximum(0 + barChart.getBarData().getGroupWidth(groupSpace, barSpace) * 7);
-//        barChart.getAxisLeft().setAxisMinimum(0);
-//        barChart.groupBars(0, groupSpace, barSpace);
-//
-//        barChart.invalidate();
-
-
-        //BarDataSet dataSet = new BarDataSet(entries, "Expense Categories");
-        ArrayList<Integer> colors = new ArrayList<>();
-        for(int color: ColorTemplate.MATERIAL_COLORS){
-            colors.add(color);
-        }
-        for(int color: ColorTemplate.VORDIPLOM_COLORS){
-            colors.add(color);
-        }
-        dataSet.setColors(colors);
-        dataSet.setValueTextSize(16f);
-        BarData data = new BarData(dataSet);
-        //data.setDrawValues(true);
-        data.setValueTextColor(Color.BLACK);
-        //barChart.setFitBars(true);
-        barChart.setData(data);
-        barChart.animateY(1400, Easing.EaseInOutQuad);
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -219,7 +157,83 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+    private void setupPieChart(){
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setUsePercentValues(true);
+        pieChart.setEntryLabelTextSize(12);
+        pieChart.setEntryLabelColor(Color.BLACK);
+        //update grand total display for the chart whenever the app is loaded
+        String total = GetTotal(MainActivity3.ExpenseList);
+        pieChart.setCenterText(total);
+        pieChart.setCenterTextSize(24);
+        pieChart.setCenterTextColor(Color.BLACK);
+        pieChart.getDescription().setEnabled(true);
 
+        Legend l = pieChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(true);
+        l.setEnabled(true);
+    }
+
+    private void loadPieChartData(){
+        ArrayList<PieEntry> entries = createPieChartData();
+        ArrayList<Integer> colors = new ArrayList<>();
+        for(int color: ColorTemplate.MATERIAL_COLORS){
+            colors.add(color);
+        }
+        for(int color: ColorTemplate.VORDIPLOM_COLORS){
+            colors.add(color);
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "Expense Categories");
+        dataSet.setColors(colors);
+
+        PieData data = new PieData(dataSet);
+        data.setDrawValues(true);
+        data.setValueFormatter(new PercentFormatter(pieChart));
+        data.setValueTextSize(12f);
+        data.setValueTextColor(Color.BLACK);
+        pieChart.setExtraBottomOffset(20f);
+        pieChart.setData(data);
+        //data has changed, and need to refresh
+        pieChart.invalidate();
+        //animation in milliseconds
+        pieChart.animateY(1400, Easing.EaseInOutQuad);
+    }
+    public ArrayList<PieEntry> createPieChartData(){
+        //filtertype = Day, Month, or Year
+        //date = day, or the month, or the year inputted?
+        //need to be able to filter by day, month, or year
+        ArrayList<PieEntry> ExpenseChartData = new ArrayList<>();
+        //format data to be easily added to the PieEntry array list
+        //use hashmap to have string = category and double = percentage
+        HashMap<String, Double> expenseDataMap = new HashMap<>();
+
+        double total = 0.0;
+        for(int i = 0; i < MainActivity3.ExpenseList.size(); i++){
+            if(expenseDataMap.containsKey(MainActivity3.ExpenseList.get(i).getCategory())){
+                expenseDataMap.put(MainActivity3.ExpenseList.get(i).getCategory(), expenseDataMap.get(MainActivity3.ExpenseList.get(i).getCategory()) + MainActivity3.ExpenseList.get(i).getCostAmount());
+            }
+            else{
+                expenseDataMap.put(MainActivity3.ExpenseList.get(i).getCategory(), MainActivity3.ExpenseList.get(i).getCostAmount());
+            }
+            total += MainActivity3.ExpenseList.get(i).getCostAmount();
+        }
+        for(String i : expenseDataMap.keySet()){
+            ExpenseChartData.add(new PieEntry((float)(expenseDataMap.get(i)/total), i));
+        }
+        return ExpenseChartData;
+    }
+
+    public String GetTotal(ArrayList<Expense> filteredExpenseList){
+        double expense_total = 0.00;
+        for(int i = 0; i < filteredExpenseList.size(); i++){
+            expense_total += filteredExpenseList.get(i).getCostAmount();
+        }
+        return "$" + String.format(Locale.US,"%.2f", expense_total);
+    }
     public void resetFilters(View view){
         spinner.setSelection(0);
         spinner2.setSelection(0);
