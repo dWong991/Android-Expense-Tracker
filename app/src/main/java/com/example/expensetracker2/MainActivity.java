@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         //maybe check for a way to see if the data is modified then call loadPieChartData()
         //but for now it works as intended, will optimize later
         //update grand total display for the chart whenever the main activity1 is resumed
-        String total = GetTotal(MainActivity3.ExpenseList);
-        pieChart.setCenterText(total);
+        String total = "$" + GetTotal(MainActivity3.ExpenseList);
+        pieChart.setCenterText("Grand Total \n" + total);
         loadPieChartData();
     }
 
@@ -101,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setEntryLabelTextSize(12);
         pieChart.setEntryLabelColor(Color.BLACK);
         //update grand total display for the chart whenever the app is loaded
-        String total = GetTotal(MainActivity3.ExpenseList);
-        pieChart.setCenterText(total);
+        String total = "$" + GetTotal(MainActivity3.ExpenseList);
+        pieChart.setCenterText("Grand Total" + total);
         pieChart.setCenterTextSize(24);
         pieChart.setCenterTextColor(Color.BLACK);
         pieChart.getDescription().setEnabled(true);
@@ -130,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
 
         PieData data = new PieData(dataSet);
         data.setDrawValues(true);
-        data.setValueFormatter(new PercentFormatter(pieChart));
+        double total = GetTotal(MainActivity3.ExpenseList);
+        data.setValueFormatter(new MyValueFormatter(total));
         data.setValueTextSize(12f);
         data.setValueTextColor(Color.BLACK);
         pieChart.setExtraBottomOffset(20f);
@@ -165,11 +166,11 @@ public class MainActivity extends AppCompatActivity {
         return ExpenseChartData;
     }
 
-    public String GetTotal(ArrayList<Expense> filteredExpenseList){
+    public double GetTotal(ArrayList<Expense> filteredExpenseList){
         double expense_total = 0.00;
         for(int i = 0; i < filteredExpenseList.size(); i++){
             expense_total += filteredExpenseList.get(i).getCostAmount();
         }
-        return "$" + String.format(Locale.US,"%.2f", expense_total);
+        return expense_total;
     }
 }

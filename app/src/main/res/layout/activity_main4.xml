@@ -15,22 +15,12 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <Button
-        android:id="@+id/buttonDay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="104dp"
-        android:onClick="dayPicker"
-        android:text="Day"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonMonth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="240dp"
+        android:layout_marginEnd="260dp"
         android:layout_marginBottom="16dp"
         android:onClick="resetFilters"
         android:text="Clear Filters"
@@ -51,17 +41,8 @@
         android:id="@+id/spinnerYear"
         android:layout_width="109dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="168dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Spinner
-        android:id="@+id/spinnerMonth"
-        android:layout_width="110dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="168dp"
-        android:layout_marginBottom="168dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="72dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -69,56 +50,33 @@
         android:id="@+id/textViewDay"
         android:layout_width="87dp"
         android:layout_height="29dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="168dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginBottom="74dp"
         android:text="ALL"
         android:textAlignment="center"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
+    <Button
+        android:id="@+id/buttonDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="196dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="64dp"
+        android:onClick="dayPicker"
+        android:text="Day"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <RadioButton
-            android:id="@+id/radio_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginBottom="76dp"
-            android:text="Combined"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <RadioButton
-            android:id="@+id/radio_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="104dp"
-            android:layout_marginBottom="76dp"
-            android:checked="true"
-            android:text="Individual"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/radio_category" />
-
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="132dp"
-        android:text="Select how to display results"
+    <Spinner
+        android:id="@+id/spinnerMonth"
+        android:layout_width="110dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="124dp"
+        android:layout_marginBottom="72dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

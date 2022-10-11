@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -50,10 +51,13 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         pieChart = findViewById(R.id.activity_main4_piechart);
         setupPieChart();
         loadPieChartData();
+        CustomMarkerView mv = new CustomMarkerView(this, R.layout.custom_marker);
+        pieChart.setMarker(mv);
 
         dayView = findViewById(R.id.textViewDay);
         Button dayButton = findViewById(R.id.buttonDay);
         Button monthButton = findViewById(R.id.buttonMonth);
+        Button applyButton = findViewById(R.id.buttonSelect);
 
         spinner = findViewById(R.id.spinnerMonth);
         adapter = ArrayAdapter.createFromResource(this, R.array.months, android.R.layout.simple_spinner_item);
@@ -66,6 +70,13 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
         spinner2.setOnItemSelectedListener(this);
+
+        applyButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+            }
+        });
     }
     protected void onResume(){
         super.onResume();
@@ -74,7 +85,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         //but for now it works as intended, will optimize later
         //update grand total display for the chart whenever the main activity1 is resumed
 
-        String total = GetTotal(MainActivity3.ExpenseList);
+        String total = "$" + GetTotal(MainActivity3.ExpenseList);
         pieChart.setCenterText(total);
         loadPieChartData();
 
@@ -163,18 +174,18 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         pieChart.setEntryLabelTextSize(12);
         pieChart.setEntryLabelColor(Color.BLACK);
         //update grand total display for the chart whenever the app is loaded
-        String total = GetTotal(MainActivity3.ExpenseList);
+        String total = "$" + GetTotal(MainActivity3.ExpenseList);
         pieChart.setCenterText(total);
         pieChart.setCenterTextSize(24);
         pieChart.setCenterTextColor(Color.BLACK);
-        pieChart.getDescription().setEnabled(true);
+        pieChart.getDescription().setEnabled(false);
 
         Legend l = pieChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
         l.setDrawInside(true);
-        l.setEnabled(true);
+        l.setEnabled(false);
     }
 
     private void loadPieChartData(){
@@ -189,14 +200,33 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
 
         PieDataSet dataSet = new PieDataSet(entries, "Expense Categories");
         dataSet.setColors(colors);
+        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setSliceSpace(2);
+        dataSet.setValueLinePart1OffsetPercentage(90);
+        dataSet.setValueLinePart1Length(0.5f);
+        dataSet.setValueLinePart2Length(0.5f);
 
         PieData data = new PieData(dataSet);
         data.setDrawValues(true);
-        data.setValueFormatter(new PercentFormatter(pieChart));
+        double total = GetTotal(MainActivity3.ExpenseList);
+        data.setValueFormatter(new MyValueFormatter(total));
         data.setValueTextSize(12f);
         data.setValueTextColor(Color.BLACK);
+
+
+
         pieChart.setExtraBottomOffset(20f);
         pieChart.setData(data);
+
+        pieChart.setTransparentCircleRadius(45);
+        pieChart.setHoleRadius(40);
+
+        //pieChart.setExtraBottomOffset(40f);
+        //pieChart.setExtraTopOffset(40f);
+        pieChart.setExtraLeftOffset(40f);
+        pieChart.setExtraRightOffset(40f);
         //data has changed, and need to refresh
         pieChart.invalidate();
         //animation in milliseconds
@@ -227,12 +257,12 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         return ExpenseChartData;
     }
 
-    public String GetTotal(ArrayList<Expense> filteredExpenseList){
+    public double GetTotal(ArrayList<Expense> filteredExpenseList){
         double expense_total = 0.00;
         for(int i = 0; i < filteredExpenseList.size(); i++){
             expense_total += filteredExpenseList.get(i).getCostAmount();
         }
-        return "$" + String.format(Locale.US,"%.2f", expense_total);
+        return expense_total;
     }
     public void resetFilters(View view){
         spinner.setSelection(0);
