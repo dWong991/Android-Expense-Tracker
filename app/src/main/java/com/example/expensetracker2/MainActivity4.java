@@ -86,7 +86,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         //update grand total display for the chart whenever the main activity1 is resumed
 
         String total = "$" + GetTotal(MainActivity3.ExpenseList);
-        pieChart.setCenterText(total);
+        pieChart.setCenterText("Total \n" + total);
         loadPieChartData();
 
         spinner2 = findViewById(R.id.spinnerYear);
@@ -175,7 +175,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         pieChart.setEntryLabelColor(Color.BLACK);
         //update grand total display for the chart whenever the app is loaded
         String total = "$" + GetTotal(MainActivity3.ExpenseList);
-        pieChart.setCenterText(total);
+        pieChart.setCenterText("Total \n" + total);
         pieChart.setCenterTextSize(24);
         pieChart.setCenterTextColor(Color.BLACK);
         pieChart.getDescription().setEnabled(false);
@@ -200,13 +200,13 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
 
         PieDataSet dataSet = new PieDataSet(entries, "Expense Categories");
         dataSet.setColors(colors);
-        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        dataSet.setValueTextColor(Color.BLACK);
-        dataSet.setSliceSpace(2);
-        dataSet.setValueLinePart1OffsetPercentage(90);
-        dataSet.setValueLinePart1Length(0.5f);
-        dataSet.setValueLinePart2Length(0.5f);
+//        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+//        dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+//        dataSet.setValueTextColor(Color.BLACK);
+//        dataSet.setSliceSpace(2);
+//        dataSet.setValueLinePart1OffsetPercentage(90);
+//        dataSet.setValueLinePart1Length(0.5f);
+//        dataSet.setValueLinePart2Length(0.5f);
 
         PieData data = new PieData(dataSet);
         data.setDrawValues(true);
@@ -225,8 +225,8 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
 
         //pieChart.setExtraBottomOffset(40f);
         //pieChart.setExtraTopOffset(40f);
-        pieChart.setExtraLeftOffset(40f);
-        pieChart.setExtraRightOffset(40f);
+//        pieChart.setExtraLeftOffset(40f);
+//        pieChart.setExtraRightOffset(40f);
         //data has changed, and need to refresh
         pieChart.invalidate();
         //animation in milliseconds
