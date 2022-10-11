@@ -82,7 +82,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         super.onResume();
 
         double total = GetTotal(MainActivity3.ExpenseList);
-        pieChart.setCenterText("Total \n" + "$" + String.format("%.2f", total));
+        pieChart.setCenterText("Total \n" + "$" + String.format(Locale.US, "%.2f", total));
         loadPieChartData();
 
         //update spinners everytime we return to mainactivity4 based on added values
@@ -172,7 +172,7 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         pieChart.setEntryLabelColor(Color.BLACK);
         //update grand total display for the chart whenever the app is loaded
         double total = GetTotal(MainActivity3.ExpenseList);
-        pieChart.setCenterText("Total \n" + "$" + String.format("%.2f", total));
+        pieChart.setCenterText("Total \n" + "$" + String.format(Locale.US, "%.2f", total));
         pieChart.setCenterTextSize(24);
         pieChart.setCenterTextColor(Color.BLACK);
         pieChart.getDescription().setEnabled(false);
