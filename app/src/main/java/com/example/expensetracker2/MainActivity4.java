@@ -265,10 +265,6 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
 
     public ArrayList<Expense> filterList(String Day, String Month, String Year){
         ArrayList<Expense> filtered_expenseList = new ArrayList<>(MainActivity3.ExpenseList);
-        if(!Day.equals("ALL")){
-            int dayFilter = Integer.parseInt(Day);
-        }
-
         if(!Year.equals("ALL")){
             int year = Integer.parseInt(Year);
             ListIterator<Expense> currentExpense = filtered_expenseList.listIterator();
