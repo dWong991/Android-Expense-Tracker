@@ -54,12 +54,8 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         pieChart = findViewById(R.id.activity_main4_piechart);
         setupPieChart();
         loadPieChartData();
-        CustomMarkerView mv = new CustomMarkerView(this, R.layout.custom_marker);
-        pieChart.setMarker(mv);
 
         dayView = findViewById(R.id.textViewDay);
-        Button dayButton = findViewById(R.id.buttonDay);
-        Button monthButton = findViewById(R.id.buttonMonth);
         Button applyButton = findViewById(R.id.buttonSelect);
 
         spinner = findViewById(R.id.spinnerMonth);
