@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.ListIterator;
 import java.util.Locale;
 
 public class MainActivity4 extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
@@ -78,7 +79,14 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         applyButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                String month = spinner.getSelectedItem().toString();
+                String year = spinner2.getSelectedItem().toString();
+                String day = dayView.getText().toString();
 
+                ArrayList<Expense> filterList = filterList(day, month, year);
+                loadPieChartData(filterList);
+                double total = GetTotal(filterList);
+                pieChart.setCenterText("Total \n" + "$" + String.format(Locale.US, "%.2f", total));
             }
         });
     }
@@ -112,7 +120,6 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
             return -1;
         }
         else {
-
             for (int i = 0; i < spinner.getCount(); i++) {
                 if (spinner.getItemAtPosition(i).toString().equals(String.valueOf(year))) {
                     return i;
@@ -201,34 +208,16 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
 
         PieDataSet dataSet = new PieDataSet(entries, "Expense Categories");
         dataSet.setColors(colors);
-//        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-//        dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-//        dataSet.setValueTextColor(Color.BLACK);
-//        dataSet.setSliceSpace(2);
-//        dataSet.setValueLinePart1OffsetPercentage(90);
-//        dataSet.setValueLinePart1Length(0.5f);
-//        dataSet.setValueLinePart2Length(0.5f);
-
         PieData data = new PieData(dataSet);
         data.setDrawValues(true);
         double total = GetTotal(MainActivity3.ExpenseList);
         data.setValueFormatter(new MyValueFormatter(total));
         data.setValueTextSize(12f);
         data.setValueTextColor(Color.BLACK);
-
-
-
         pieChart.setExtraBottomOffset(20f);
         pieChart.setData(data);
-
         pieChart.setTransparentCircleRadius(45);
         pieChart.setHoleRadius(40);
-
-        //pieChart.setExtraBottomOffset(40f);
-        //pieChart.setExtraTopOffset(40f);
-//        pieChart.setExtraLeftOffset(40f);
-//        pieChart.setExtraRightOffset(40f);
-        //data has changed, and need to refresh
         pieChart.invalidate();
         //animation in milliseconds
         pieChart.animateY(1400, Easing.EaseInOutQuad);
@@ -271,5 +260,142 @@ public class MainActivity4 extends AppCompatActivity implements AdapterView.OnIt
         adapter.notifyDataSetChanged();
         adapter2.notifyDataSetChanged();
         dayView.setText("ALL");
+    }
+
+
+    public ArrayList<Expense> filterList(String Day, String Month, String Year){
+        ArrayList<Expense> filtered_expenseList = new ArrayList<>(MainActivity3.ExpenseList);
+        if(!Day.equals("ALL")){
+            int dayFilter = Integer.parseInt(Day);
+        }
+
+        if(!Year.equals("ALL")){
+            int year = Integer.parseInt(Year);
+            ListIterator<Expense> currentExpense = filtered_expenseList.listIterator();
+            while(currentExpense.hasNext()){
+                Expense selectedExpense = currentExpense.next();
+                if(selectedExpense.getYear() != year){
+                    currentExpense.remove();
+                }
+            }
+        }
+        if(!Month.equals("ALL")){
+            int month = convertMonth(Month);
+            ListIterator<Expense> currentExpense = filtered_expenseList.listIterator();
+            while(currentExpense.hasNext()){
+                Expense selectedExpense = currentExpense.next();
+                if(selectedExpense.getMonth() != month){
+                    currentExpense.remove();
+                }
+            }
+        }
+        if(!Day.equals("ALL")){
+            int dayFilter = Integer.parseInt(Day);
+            ListIterator<Expense> currentExpense = filtered_expenseList.listIterator();
+            while(currentExpense.hasNext()){
+                Expense selectedExpense = currentExpense.next();
+                if(selectedExpense.getDay() != dayFilter){
+                    currentExpense.remove();
+                }
+            }
+        }
+
+        return filtered_expenseList;
+    }
+
+    public int convertMonth(String month){
+        int monthNum = 0;
+        switch(month) {
+            case "JAN":
+                monthNum = 1;
+                break;
+            case "FEB":
+                monthNum = 2;
+                break;
+            case "MAR":
+                monthNum = 3;
+                break;
+            case "APR":
+                monthNum = 4;
+                break;
+            case "MAY":
+                monthNum = 5;
+                break;
+            case "JUN":
+                monthNum = 6;
+                break;
+            case "JUL":
+                monthNum = 7;
+                break;
+            case "AUG":
+                monthNum = 8;
+                break;
+            case "SEPT":
+                monthNum = 9;
+                break;
+            case "OCT":
+                monthNum = 10;
+                break;
+            case "NOV":
+                monthNum = 11;
+                break;
+            case "DEC":
+                monthNum = 12;
+                break;
+            default:
+        }
+        return monthNum;
+    }
+
+
+    private void loadPieChartData(ArrayList<Expense> filteredList){
+        ArrayList<PieEntry> entries = createPieChartData(filteredList);
+        ArrayList<Integer> colors = new ArrayList<>();
+        for(int color: ColorTemplate.MATERIAL_COLORS){
+            colors.add(color);
+        }
+        for(int color: ColorTemplate.VORDIPLOM_COLORS){
+            colors.add(color);
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "Expense Categories");
+        dataSet.setColors(colors);
+        PieData data = new PieData(dataSet);
+        data.setDrawValues(true);
+        double total = GetTotal(filteredList);
+        data.setValueFormatter(new MyValueFormatter(total));
+        data.setValueTextSize(12f);
+        data.setValueTextColor(Color.BLACK);
+        pieChart.setExtraBottomOffset(20f);
+        pieChart.setData(data);
+        pieChart.setTransparentCircleRadius(45);
+        pieChart.setHoleRadius(40);
+        pieChart.invalidate();
+        //animation in milliseconds
+        pieChart.animateY(1400, Easing.EaseInOutQuad);
+    }
+    public ArrayList<PieEntry> createPieChartData(ArrayList<Expense> filteredList){
+        //filtertype = Day, Month, or Year
+        //date = day, or the month, or the year inputted?
+        //need to be able to filter by day, month, or year
+        ArrayList<PieEntry> ExpenseChartData = new ArrayList<>();
+        //format data to be easily added to the PieEntry array list
+        //use hashmap to have string = category and double = percentage
+        HashMap<String, Double> expenseDataMap = new HashMap<>();
+
+        double total = 0.0;
+        for(int i = 0; i < filteredList.size(); i++){
+            if(expenseDataMap.containsKey(filteredList.get(i).getCategory())){
+                expenseDataMap.put(filteredList.get(i).getCategory(), expenseDataMap.get(filteredList.get(i).getCategory()) + filteredList.get(i).getCostAmount());
+            }
+            else{
+                expenseDataMap.put(filteredList.get(i).getCategory(), filteredList.get(i).getCostAmount());
+            }
+            total += filteredList.get(i).getCostAmount();
+        }
+        for(String i : expenseDataMap.keySet()){
+            ExpenseChartData.add(new PieEntry((float)(expenseDataMap.get(i)/total), i));
+        }
+        return ExpenseChartData;
     }
 }
